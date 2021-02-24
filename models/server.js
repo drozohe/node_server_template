@@ -6,6 +6,13 @@ class Server {
         this.port = process.env.PORT || 3000;
         this.app  = express();
 
+        this.paths = {
+            usuarios: '/api/users',
+            codigos2d: '/api/2d'
+        };
+
+        Object.freeze(this.paths);
+
         //Middlewares
         this.middlewares();
 
@@ -14,13 +21,18 @@ class Server {
     }
 
     middlewares(){
+
+        //configurar el directorio publico
         this.app.use(express.static('public'));
+
+        //lectura y parseo del body
+        this.app.use(express.json());
     }
 
     routes(){
-        this.app.get("/codigos2d", (req,res)=>{
-            res.send("Entoes...");
-        });
+        //configuracion de rutas de la app
+        this.app.use(this.paths.usuarios, require('../routes/users.routes'));
+        this.app.use(this.paths.codigos2d, require('../routes/cod2d.routes'));
     }
 
     listen(){
