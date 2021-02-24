@@ -44,6 +44,7 @@ class cnx_MSSQL {
     }
 
     static getInstance(){
+        //singleton
         if (!cnx_MSSQL.instance) {
             cnx_MSSQL.instance = new PrivateCnx_MSSQL();
         }
